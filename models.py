@@ -14,10 +14,15 @@ class Users(BaseModel):
 
 class MainSlider(BaseModel):
     id = AutoField()
-    position = IntegerField()
     img = CharField()
-     
 
+class Ids(BaseModel):
+	id = AutoField()
+	image = IntegerField()
 
 if __name__ == '__main__':
     Users.create_table()
+    MainSlider.create_table()
+    Ids.create_table()
+    #Ids(image=1).save()
+    

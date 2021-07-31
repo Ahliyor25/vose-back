@@ -11,6 +11,9 @@ from hashlib import sha256
 from werkzeug.utils import find_modules, import_string
 
 
+class helper_var:
+    host = "192.168.0.110:9000/getimg/"
+    path = 'G:\\back\\vose'
 
 
 
@@ -28,7 +31,14 @@ def register_blueprints_login(app):
         if hasattr(mod, 'bp'):
             app.register_blueprint(mod.bp)
 
-
+def register_blueprints_main_page(app):
+    """
+    Searches all blueprints in folder blueprints/login
+    """
+    for name in find_modules('blueprints.main_page'):
+        mod = import_string(name)
+        if hasattr(mod, 'bp'):
+            app.register_blueprint(mod.bp)
 
 
 # * Images

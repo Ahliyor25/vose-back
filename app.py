@@ -7,11 +7,14 @@ Add Cors policy
 from flask import Flask, send_file
 from flask_cors import CORS
 from utils import (
-  register_blueprints_login
+  register_blueprints_login,
+  register_blueprints_main_page
 )
 
 
-host = 'G:\back\vose'
+
+host = "/getimg/"
+path = 'G:\back\vose'
 
 app = Flask(__name__)
 
@@ -21,9 +24,9 @@ CORS(app)
 
 # импортируют приложения из папки blueprints
 register_blueprints_login(app)
+register_blueprints_main_page(app)
 
+@app.route('/getimg/<name>')
 
-
-@app.route('/getimg/media/<filename>')
-def GetImage(filename):
-    return send_file( host  + filename)
+def GetImg(name):
+	return send_file('images/'+name)
