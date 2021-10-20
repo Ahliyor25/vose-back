@@ -13,7 +13,7 @@ bp = Blueprint('main_slider',__name__,url_prefix = '/main_slider')
 path = helper_var.path
 host  = helper_var.host
 
-@bp.post('/create')
+@bp.post('/')
 @cross_origin()
 def CreateSliderMain():
 	
@@ -46,7 +46,7 @@ def CreateSliderMain():
 	except Exception as e:
 		return '{}'.format(e)
 
-@bp.get('/get')
+@bp.get('/')
 @cross_origin()
 def GetSlider():
 	

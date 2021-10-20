@@ -13,8 +13,7 @@ from utils import (
 
 
 
-host = "/getimg/"
-path = 'G:\back\vose'
+
 
 app = Flask(__name__)
 

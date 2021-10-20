@@ -12,8 +12,8 @@ from werkzeug.utils import find_modules, import_string
 
 
 class helper_var:
-    host = "192.168.0.110:9000/getimg/"
-    path = 'G:\\back\\vose'
+    host = "192.168.0.134:9000/getimg/"
+    path = 'C:\\vose_back'
 
 
 
@@ -33,7 +33,7 @@ def register_blueprints_login(app):
 
 def register_blueprints_main_page(app):
     """
-    Searches all blueprints in folder blueprints/login
+    Searches all blueprints in folder blueprints/main_page
     """
     for name in find_modules('blueprints.main_page'):
         mod = import_string(name)
