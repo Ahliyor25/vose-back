@@ -34,28 +34,66 @@ class CategoryObject(BaseModel):
     id = AutoField()
     name = CharField()
 
-class  Object(BaseModel):
+
+    # layoutcategory = ForeignKeyField(LayoutCategory, on_delete='СASCADE')
+
+class Residence(BaseModel):
     id = AutoField()
     img = CharField()
     title = CharField()
     description = CharField()
-    img_2 = CharField()
+    img_2 = CharField(null = True)
+    img_3 = CharField(null = True)
+    location = CharField()
+    typeEstate = CharField()
+    term = CharField()
+    imgYoutube = CharField(null = True)
+    linkYoutube = CharField(max_length=255)
+    titleTwo = CharField(max_length=200)
+    desTwo = TextField()
+    category = ForeignKeyField(CategoryObject, related_name='residences')
     
+class Layout(BaseModel):
+    id = AutoField()
+    img = CharField()
+    title = CharField(max_length=200)
+    des = CharField(max_length=255)
+    status = BooleanField(default=True)
+    layer = ForeignKeyField(Residence, related_name='layouts')
 
-    # layoutcategory = ForeignKeyField(LayoutCategory, on_delete='СASCADE')
+class SendLayout(BaseModel):
+    id = AutoField()
+    layout = ForeignKeyField(Layout, related_name='sendlayouts')
+    name = CharField(max_length = 50)
+    phone = CharField(max_length= 100)
+    button_text = CharField(max_length=100) 
 
+class CategoryNS(BaseModel):
+    id = AutoField()
+    name = CharField()
+
+class NS(BaseModel):
+    id = AutoField()
+    img = CharField()
+    title = CharField(max_length=200)
+    des = TextField()
+    category = ForeignKeyField(CategoryNS, related_name='ns')
 
     
 
 class Ids(BaseModel):
 	id = AutoField()
-	image = IntegerField()
+	img = IntegerField()
 
 if __name__ == '__main__':
     Users.create_table()
     MainSlider.create_table()
     TextSlider.create_table()
     CategoryObject.create_table()
+    Residence.create_table()
+    Layout.create_table()
+    CategoryNS.create_table()
+    NS.create_table()
     Ids.create_table()
-    #Ids(image=1).save()
+    Ids(img=1).save()
     

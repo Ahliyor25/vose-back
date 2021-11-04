@@ -41,7 +41,14 @@ def register_blueprints_main_page(app):
         if hasattr(mod, 'bp'):
             app.register_blueprint(mod.bp)
 
-
+def register_blueprints_news_sale(app):
+    """
+    Searches all blueprints in folder blueprints/news_sale
+    """
+    for name in find_modules('blueprints.news_sale'):
+        mod = import_string(name)
+        if hasattr(mod, 'bp'):
+            app.register_blueprint(mod.bp)
 
 
 
@@ -54,7 +61,9 @@ def hash_string_sha256(to_hash):
 
 def upload_image(files):
     
-
+    """
+    Upload image files
+    """
 
     target = os.path.join(helper_var.path, 'images')
     if not os.path.isdir(target):
@@ -71,7 +80,5 @@ def upload_image(files):
     a = Ids.get(Ids.id == 1)
     a.img = int(a.img) + 1
     a.save()
-    """
-    Upload image files
-    """
+    
     return filename

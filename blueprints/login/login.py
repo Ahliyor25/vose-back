@@ -14,7 +14,6 @@ bp = Blueprint('login',__name__,url_prefix = '/login')
 host  = helper_var.host
 
 @bp.post('/')
-@cross_origin()
 def LogIn():
 	try:
 		_username = request.json.get('username')
@@ -43,8 +42,6 @@ def LogIn():
 
 
 @bp.post('/signup')
-
-@cross_origin()
 def SignUp():
 	try:
 	#id username password name email phone
@@ -58,7 +55,7 @@ def SignUp():
 	
 		_avatar = upload_image(avatar)
 
-		access_token = create_access_token(identity=_username)
+		create_access_token(identity=_username)
 		us = Users( username = _username,
 		 password = hash_string_sha256(_password),
 		 name = _name,
@@ -68,7 +65,7 @@ def SignUp():
 		 img = _avatar
 		 )
 		us.save()
-		return jsonify(access_token=access_token), 200
+		return jsonify("user create"), 200
 	except Exception as e:
 		return '{}'.format(e)
 
@@ -101,7 +98,7 @@ def UpdateUser(id):
 			return '{}'.format(e)
 			
 @bp.get('/get_users')
-@cross_origin()
+@jwt_required()
 def GetUser():
 	try:
 		p = request.args.get('page',1)
@@ -131,8 +128,7 @@ def GetUser():
 			return '{}'.format(e)
 			
 @bp.delete('/del_users/<id>')
-
-@cross_origin()
+@jwt_required()
 def UsersDelete(id):
 	try:
 		a = Users.get(Users.id == id)

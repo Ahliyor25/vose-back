@@ -1,8 +1,7 @@
 from os import path
-from flask import  json, jsonify, request, send_file
+from flask import  json, jsonify, request
 from flask import Blueprint
-from flask_cors import cross_origin
-from werkzeug.utils import validate_arguments
+from flask_jwt_extended.view_decorators import jwt_required
 from models import *
 from peewee import *
 import os
@@ -14,8 +13,8 @@ path = helper_var.path
 host  = helper_var.host
 
 @bp.post('/')
-@cross_origin()
-def CreateText():
+@jwt_required()
+def Create():
     		
 	_name = request.json.get('name')
 	try:
@@ -30,9 +29,9 @@ def CreateText():
 		return '{}'.format(e)
 
 @bp.get('/')
-@cross_origin()
+
 def GetText():
-	
+
 	try:
 		res = CategoryObject.select()
 		js = []
@@ -44,3 +43,28 @@ def GetText():
 		return jsonify(js)
 	except Exception as e:
 		return '{}'.format(e)
+
+@bp.put('/<id>')
+@jwt_required()
+def UpdateText(id):
+	try:
+		_name = request.json.get('name')
+		row = CategoryObject.get(CategoryObject.id == id)
+	except DoesNotExist:
+		return({"msg":"Не найден Text по такому id"})
+	try:	
+		row.name = _name
+		row.save()
+		return jsonify("done")
+	except Exception as e:
+		return '{}'.format(e)
+
+@bp.delete('/<id>')
+@jwt_required()
+def DeleteText(id):
+	try:
+		row = CategoryObject.get(CategoryObject.id == id)
+	except DoesNotExist:
+		return({"msg":"Не найден Text по такому id"})
+	row.delete_instance()
+	return jsonify("done")
