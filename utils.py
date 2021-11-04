@@ -4,16 +4,17 @@ A set of functions that are needed for the project
 """
 
 
-import json
-import string
-import random
+from flask.json import jsonify
+import os
 from hashlib import sha256
 from werkzeug.utils import find_modules, import_string
+from models import Ids
+from peewee import *
 
 
 class helper_var:
-    host = "192.168.0.134:9000/getimg/"
-    path = 'C:\\vose_back'
+    host = "http://192.168.0.115:9000/getimg/"
+    path = "C:\\back_vose\\vose-back/"
 
 
 
@@ -41,30 +42,6 @@ def register_blueprints_main_page(app):
             app.register_blueprint(mod.bp)
 
 
-# * Images
-
-
-def get_id_of_image():
-    """
-    Get id of image in data.json
-    """
-    with open('data.json') as _file:
-        data = json.load(_file)
-
-    return data['avatar']
-
-
-def update_id_name():
-    """
-    Update id of image in data.json
-    """
-    with open('data.json') as _file:
-        data = json.load(_file)
-
-    data['avatar'] += 1
-
-    with open('data.json', 'w') as _file:
-        json.dump(data, _file)
 
 
 
@@ -73,3 +50,28 @@ def hash_string_sha256(to_hash):
     Hashes string to sha256
     """
     return sha256(to_hash.encode()).hexdigest()
+
+
+def upload_image(files):
+    
+
+
+    target = os.path.join(helper_var.path, 'images')
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    if len(files) == 0:
+    	return jsonify(msg="FileNotFound")
+
+    for file in files:
+        name = Ids.get(Ids.id == 1).img
+        filename = str(name) + file.filename[file.filename.index('.'):]
+        destination = '/'.join([target, filename])
+        file.save(destination)
+        
+    a = Ids.get(Ids.id == 1)
+    a.img = int(a.img) + 1
+    a.save()
+    """
+    Upload image files
+    """
+    return filename

@@ -1,4 +1,4 @@
-from utils import hash_string_sha256
+from utils import hash_string_sha256, upload_image, helper_var
 from flask import Flask, jsonify, request, send_file
 from flask_jwt_extended import (
 	JWTManager, jwt_required, create_access_token,
@@ -10,6 +10,8 @@ from models import *
 from peewee import *
 
 bp = Blueprint('login',__name__,url_prefix = '/login')
+
+host  = helper_var.host
 
 @bp.post('/')
 @cross_origin()
@@ -27,6 +29,12 @@ def LogIn():
 				response = jsonify({"id": i.id,
 				"username": i.username,
 				"password" : i.password,
+				"name" : i.name,
+				"email": i.email,
+				"role" : i.role,
+				"status" : i.status,
+				"img": host + i.img,
+
 				"access_token" : access_token })
 				return response
 			else: return ({"msg":"Не правильный пароль"})
@@ -35,14 +43,30 @@ def LogIn():
 
 
 @bp.post('/signup')
+
 @cross_origin()
 def SignUp():
 	try:
 	#id username password name email phone
-		_username = request.json.get('username')
-		_password = request.json.get('password')
+		_username = request.form.get('username')
+		_password = request.form.get('password')
+		_name =  request.form.get('name')
+		_email = request.form.get('email')
+		_role = request.form.get('role')
+		_status = request.form.get('status')
+		avatar = request.files.getlist('img')
+	
+		_avatar = upload_image(avatar)
+
 		access_token = create_access_token(identity=_username)
-		us = Users( username = _username, password = hash_string_sha256(_password))
+		us = Users( username = _username,
+		 password = hash_string_sha256(_password),
+		 name = _name,
+		 email = _email,
+		 role = _role,
+		 status = _status,
+		 img = _avatar
+		 )
 		us.save()
 		return jsonify(access_token=access_token), 200
 	except Exception as e:
@@ -53,7 +77,7 @@ def SignUp():
 			
 
 
-@bp.post('/update_user/<id>')
+@bp.put('/update_user/<id>')
 @cross_origin()
 def UpdateUser(id):
 	
@@ -95,13 +119,19 @@ def GetUser():
 				"id" : i.id,
 			
 				"username" : i.username,
-				"password" : i.password
+				"name" : i.name,
+				"email": i.email,
+				"role" : i.role,
+				"status" : i.status,
+				"img": host + i.img,
+				
 			})
 		return jsonify(js)
 	except Exception as e:
 			return '{}'.format(e)
 			
-@bp.get('/del_users/<id>')
+@bp.delete('/del_users/<id>')
+
 @cross_origin()
 def UsersDelete(id):
 	try:
