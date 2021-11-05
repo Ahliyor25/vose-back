@@ -13,8 +13,8 @@ from peewee import *
 
 
 class helper_var:
-    host = "http://192.168.0.107:9000/getimg/"
-    path = "C:\\back\\vose-back/"
+    host = "http://192.168.0.115:9000/getimg/"
+    path = "C:\\vose1\\vose-back/"
 
 
 
@@ -46,6 +46,15 @@ def register_blueprints_news_sale(app):
     Searches all blueprints in folder blueprints/news_sale
     """
     for name in find_modules('blueprints.news_sale'):
+        mod = import_string(name)
+        if hasattr(mod, 'bp'):
+            app.register_blueprint(mod.bp)
+
+def register_blueprints_layout(app):
+    """
+    Searches all blueprints in folder blueprints/news_sale
+    """
+    for name in find_modules('blueprints.layout'):
         mod = import_string(name)
         if hasattr(mod, 'bp'):
             app.register_blueprint(mod.bp)

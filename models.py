@@ -35,6 +35,7 @@ class CategoryObject(BaseModel):
     name = CharField()
 
 
+
     # layoutcategory = ForeignKeyField(LayoutCategory, on_delete='СASCADE')
 
 class Residence(BaseModel):
@@ -51,7 +52,7 @@ class Residence(BaseModel):
     linkYoutube = CharField(max_length=255)
     titleTwo = CharField(max_length=200)
     desTwo = TextField()
-    category = ForeignKeyField(CategoryObject, related_name='residences')
+    category = ForeignKeyField(CategoryObject, related_name='CategoryObjectId')
     
 class Layout(BaseModel):
     id = AutoField()
@@ -59,7 +60,8 @@ class Layout(BaseModel):
     title = CharField(max_length=200)
     des = CharField(max_length=255)
     status = BooleanField(default=True)
-    layer = ForeignKeyField(Residence, related_name='layouts')
+    residence = ForeignKeyField(Residence, related_name='residences', on_delete='CASCADE')
+
 
 class SendLayout(BaseModel):
     id = AutoField()
@@ -68,9 +70,26 @@ class SendLayout(BaseModel):
     phone = CharField(max_length= 100)
     button_text = CharField(max_length=100) 
 
+class Services(BaseModel):
+    id = AutoField()
+    img = CharField()
+    title = CharField()
+    des = TextField()
+
+class Team(BaseModel):
+    id = AutoField()
+    img = CharField()
+    name = CharField()
+    position = CharField()
+    des = TextField()
+
+
+
 class CategoryNS(BaseModel):
     id = AutoField()
     name = CharField()
+
+
 
 class NS(BaseModel):
     id = AutoField()
@@ -79,7 +98,7 @@ class NS(BaseModel):
     des = TextField()
     category = ForeignKeyField(CategoryNS, related_name='ns')
 
-    
+  
 
 class Ids(BaseModel):
 	id = AutoField()
@@ -93,7 +112,9 @@ if __name__ == '__main__':
     Residence.create_table()
     Layout.create_table()
     CategoryNS.create_table()
+    Services.create_table()
+    Team.create_table()
     NS.create_table()
     Ids.create_table()
-    Ids(img=1).save()
+    #Ids(img=1).save()
     

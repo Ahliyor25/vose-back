@@ -10,12 +10,10 @@ from utils import (
   register_blueprints_login,
   register_blueprints_main_page,
   register_blueprints_news_sale,
+  register_blueprints_layout
 )
 from flask_jwt_extended import JWTManager
 from datetime import timedelta
-
-
-
 
 app = Flask(__name__)
 
@@ -29,6 +27,7 @@ app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=48)
 register_blueprints_login(app)
 register_blueprints_main_page(app)
 register_blueprints_news_sale(app)
+register_blueprints_layout(app)
 
 @app.route('/getimg/<name>')
 

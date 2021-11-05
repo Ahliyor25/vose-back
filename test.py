@@ -1,3 +1,6 @@
-from datetime import datetime
+from flask import request
 
-print(datetime.now())
+img =   request.files.getlist('img')
+
+if img is None:
+    print("No file")    

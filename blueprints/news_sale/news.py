@@ -37,11 +37,20 @@ def create_residence():
 @bp.get('/')
 def get_ns():
 	try:
-		ns = NS.select()
-		js = []
+		p = request.args.get('page',1)
+		ns = NS.select().order_by(NS.id).paginate(int(p),6)
+		count = NS.select().count()
+		js = {"count" : 0, 'ns' : []}
+		if count%6==0:
+			js['count'] = count//6
+		elif count > 6:
+			js['count'] = count //6 + 1
+		else:
+			js['count'] = 1
+	
 
 		for n in ns:
-			js.append({
+			js['ns'].append({
 				'id':n.id,
 				'img':host + n.img,
 				'title':n.title,

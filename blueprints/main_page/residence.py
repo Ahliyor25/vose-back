@@ -55,7 +55,7 @@ def get_residence():
 			'linkYoutube':residence.linkYoutube,
 			'titleTwo':residence.titleTwo,
 			'desTwo':residence.desTwo,
-			'category':residence.category_id,
+			'category_id':residence.category_id,
 		} for residence in residences]
 		return jsonify(residences)
 	except Exception as e:
