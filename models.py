@@ -76,11 +76,17 @@ class Services(BaseModel):
     title = CharField()
     des = TextField()
 
-class Team(BaseModel):
+class Spealization(BaseModel):
     id = AutoField()
     img = CharField()
     name = CharField()
     position = CharField()
+    des = TextField()
+
+class Spealization(BaseModel):
+    id = AutoField()
+    img = CharField()
+    title = CharField()
     des = TextField()
 
 
@@ -113,7 +119,7 @@ if __name__ == '__main__':
     Layout.create_table()
     CategoryNS.create_table()
     Services.create_table()
-    Team.create_table()
+    Spealization.create_table()
     NS.create_table()
     Ids.create_table()
     #Ids(img=1).save()

@@ -22,6 +22,12 @@ def create_residence():
 	try:
 		img = request.files.getlist('img')
 		_img = upload_image(img)
+		img2 = request.files.getlist('img2')
+		_img2 = upload_image(img2)
+		img3 = request.files.getlist('img3')
+		_img3 = upload_image(img3)
+		imgYoutube = request.files.getlist('imgYoutube')
+		_imgYoutube = upload_image(imgYoutube)
 		data = request.form.get
 		residence = Residence(
 			img = _img,

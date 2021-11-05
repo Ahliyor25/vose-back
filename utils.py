@@ -52,9 +52,18 @@ def register_blueprints_news_sale(app):
 
 def register_blueprints_layout(app):
     """
-    Searches all blueprints in folder blueprints/news_sale
+    Searches all blueprints in folder blueprints/layout
     """
     for name in find_modules('blueprints.layout'):
+        mod = import_string(name)
+        if hasattr(mod, 'bp'):
+            app.register_blueprint(mod.bp)
+
+def register_blueprints_about(app):
+    """
+    Searches all blueprints in folder blueprints/about
+    """
+    for name in find_modules('blueprints.about'):
         mod = import_string(name)
         if hasattr(mod, 'bp'):
             app.register_blueprint(mod.bp)

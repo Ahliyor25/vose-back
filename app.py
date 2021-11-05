@@ -10,7 +10,8 @@ from utils import (
   register_blueprints_login,
   register_blueprints_main_page,
   register_blueprints_news_sale,
-  register_blueprints_layout
+  register_blueprints_layout,
+  register_blueprints_about
 )
 from flask_jwt_extended import JWTManager
 from datetime import timedelta
@@ -28,6 +29,7 @@ register_blueprints_login(app)
 register_blueprints_main_page(app)
 register_blueprints_news_sale(app)
 register_blueprints_layout(app)
+register_blueprints_about(app)
 
 @app.route('/getimg/<name>')
 
