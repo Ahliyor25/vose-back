@@ -13,8 +13,8 @@ from peewee import *
 
 
 class helper_var:
-    host = "http://192.168.0.115:9000/getimg/"
-    path = "C:\\vose1\\vose-back/"
+    host = "http://92.255.78.47:9000/getimg/"
+    path = "/var/www/projects/vose-back/"
 
 
 

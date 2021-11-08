@@ -76,12 +76,7 @@ class Services(BaseModel):
     title = CharField()
     des = TextField()
 
-class Spealization(BaseModel):
-    id = AutoField()
-    img = CharField()
-    name = CharField()
-    position = CharField()
-    des = TextField()
+
 
 class Spealization(BaseModel):
     id = AutoField()
@@ -122,5 +117,5 @@ if __name__ == '__main__':
     Spealization.create_table()
     NS.create_table()
     Ids.create_table()
-    #Ids(img=1).save()
+    Ids(img=1).save()
     

@@ -19,23 +19,49 @@ host  = helper_var.host
 @bp.post('/')
 @jwt_required()
 def create_residence():
-	try:
-		img = request.files.getlist('img')
+	
+	img = request.files.getlist('img')
+	if request.files['img'].filename == '':
+		return jsonify({'message':'No file [img] selected'}),400
+	else:
 		_img = upload_image(img)
-		img2 = request.files.getlist('img2')
+
+	img2 = request.files.getlist('img2')
+	img3 = request.files.getlist('img3')
+	imgYoutube = request.files.getlist('imgYoutube')
+
+	data = request.form.get
+
+	
+	if request.files['img2'].filename == '':
+		_img2 = None
+	else:
 		_img2 = upload_image(img2)
-		img3 = request.files.getlist('img3')
+
+	if  request.files['img3'].filename == '':
+		_img3 = None
+		
+	else:
 		_img3 = upload_image(img3)
-		imgYoutube = request.files.getlist('imgYoutube')
+
+	if request.files['imgYoutube'].filename == '':
+		_imgYoutube = None
+		
+	else:
 		_imgYoutube = upload_image(imgYoutube)
-		data = request.form.get
+		
+			
+	try:
 		residence = Residence(
 			img = _img,
 			title = data('title'),
 			description = data('description'),
 			location = data('location'),
+			img_2 = _img2,
+			img_3 = _img3,
 			typeEstate = data('typeEstate'),
 			term = data('term'),
+			imgYoutube = _imgYoutube,
 			linkYoutube = data('linkYoutube'),
 			titleTwo = data('titleTwo'),
 			desTwo = data('desTwo'),
@@ -49,21 +75,37 @@ def create_residence():
 @bp.get('/')
 def get_residence():
 	try:
-		residences = Residence.select()
-		residences = [{
-			'id':residence.id,
+		p = request.args.get('page',1)
+		residences = Residence.select().order_by(Residence.id).paginate(int(p),6) 
+		count = Residence.select().count()
+		js = {"count" : 0, 'residence' : []}
+		if count%6==0:
+		    js['count'] = count//6
+		elif count>6:
+			js['count'] = count//6+1
+		else:
+			js['count'] = 1
+
+		for residence in residences:
+
+		 js['residence'].append({
+			 'id':residence.id,
 			'img':host + residence.img,
 			'title':residence.title,
 			'description':residence.description,
+			"img2" : residence.img_2 if residence.img_2 is None else  host + residence.img_2,
+			"img3" : residence.img_3 if residence.img_3 is None else  host + residence.img_3,
 			'location':residence.location,
 			'typestate':residence.typeEstate,
 			'term':residence.term,
+			"imgYoutube" : residence.imgYoutube if residence.imgYoutube is None else  host + residence.imgYoutube,
 			'linkYoutube':residence.linkYoutube,
 			'titleTwo':residence.titleTwo,
 			'desTwo':residence.desTwo,
 			'category_id':residence.category_id,
-		} for residence in residences]
-		return jsonify(residences)
+		 })
+			
+		return jsonify(js)
 	except Exception as e:
 		return '{}'.format(e)
 
